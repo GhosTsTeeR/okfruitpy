@@ -9,6 +9,7 @@ from . import db
 app = Flask(__name__)
 CORS(app)
 
+# HTPP
 # inicializar sqlalchemy y marshmallow
 ma = Marshmallow(app)
 
