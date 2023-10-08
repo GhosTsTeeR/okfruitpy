@@ -2,9 +2,7 @@ from declarar_librerias import *
 from declarar_variables import *
 from declarar_rutas import *
 
-def proceso_analisis(ruta_img, image_file, numero_aleatorio, fecha_actual):
-  print("la ruta en la que se guarda:", ruta_img, "el nombre con el que se guarda ",image_file)
-  
+def proceso_analisis(ruta_img, image_file, numero_aleatorio, fecha_actual):  
   t_0 = time.process_time_ns()
   ruta_guardar= 'guardar_analisis/'
 

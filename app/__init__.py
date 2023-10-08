@@ -23,5 +23,58 @@ def get_db_connection():
                                 database='mydb')
   return cnx
 
-def add_datos(data_json):
+def add_datos_cerezas(data_json, numero_aleatorio, fecha_actual, version):
+  nombreUnico = numero_aleatorio+version+fecha_actual
+  cnx = get_db_connection()  
+  cursor = cnx.cursor()
+  query_uno = 'INSERT INTO Analisis_Fruta (idDocumento, descripcion, Tipo_Fruta_idTipo_Fruta, Huerto_idHuerto) VALUES (%s, %s, %s, %s)'
+  datos_uno = (nombreUnico, "no se", 1, 1)
+  cursor.execute(query_uno, datos_uno)
+  cnx.commit()
+  cursor.close()
+  cnx.close()
+  for fruto in data_json['datos'][0]['resultadoAnalisis']:
+    cnx = get_db_connection()  
+    cursor = cnx.cursor()
+    numero_fruto = fruto['NumeroFruto']
+    color = fruto['Color']
+    calibre = fruto['Calibre']
+    pedicelo = fruto['Pedicelo']
+    danio = fruto['Danio']
+
+    query_dos = 'INSERT INTO Resultado_Cereza (idAnalisis_Fruta, Numero_Fruto, Color, Pedicelo, Porcentaje_Daño) VALUES (%s, %s, %s, %s, %s)'
+    datos_dos = (11, numero_fruto, color, pedicelo, danio)
+    #posiblemente haya fallos por la falta de calibre
+    cursor.execute(query_dos, datos_dos)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+def add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version):
   print(data_json)
+  nombreUnico = numero_aleatorio+version+fecha_actual
+  cnx = get_db_connection()  
+  cursor = cnx.cursor()
+  query_uno = 'INSERT INTO Analisis_Fruta (idDocumento, descripcion, Tipo_Fruta_idTipo_Fruta, Huerto_idHuerto) VALUES (%s, %s, %s, %s)'
+  datos_uno = (nombreUnico, "no se", 1, 1)
+  cursor.execute(query_uno, datos_uno)
+  cnx.commit()
+  cursor.close()
+  cnx.close()
+  for fruto in data_json['datos'][0]['resultadoAnalisis']:
+    cnx = get_db_connection()  
+    cursor = cnx.cursor()
+    numero_fruto = fruto['NumeroFruto']
+    color = fruto['Color']
+    calibre = fruto['Calibre']
+    manipulacion = fruto['Manipulacion']
+    danio = fruto['Danio']
+
+    query_dos = 'INSERT INTO Resultado_Arandano (idAnalisis_Fruta, Numero_Fruto, Color, Porcentaje_Daño, Bloom) VALUES (%s, %s, %s, %s, %s)'
+    datos_dos = (14, numero_fruto, color, danio, manipulacion)
+    #posiblemente haya fallos por la falta de calibre
+    cursor.execute(query_dos, datos_dos)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+

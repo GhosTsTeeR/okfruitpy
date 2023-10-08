@@ -8,6 +8,7 @@ import datetime
 db = SQLAlchemy()
 from __init__ import get_db_connection
 from demo_main_v9_5 import proceso_analisis
+from prueba_algoritmos_v2_3.demo_main_v2_3 import inicializar_arandanos
 
 app = Flask(__name__)
 CORS(app)
@@ -53,8 +54,6 @@ def add_usuario():
 # consultar frutas v:
 @app.route('/get_type_fruit')
 def consultar_tipo_fruta():
-  print("entramos")
-
   cnx = get_db_connection()
 
   cursor = cnx.cursor()
@@ -97,7 +96,7 @@ def insert_analisis_img():
 
     # Obtener el archivo de la solicitud POST
     file = request.files['file']
-    if (tipo == "arandanos"):
+    if (tipo == "cerezas"):
       # Verificar si el archivo tiene un nombre y es una imagen
       if file.filename == '':
           return "El archivo no tiene un nombre válido."
@@ -114,8 +113,25 @@ def insert_analisis_img():
 
       proceso_analisis(ruta_img, nombre_archivo, numero_aleatorio, fecha_actual)
       return "Se verificó el archivo y se generó un reporte con éxito!"
-    if (tipo == "cerezas"):
-      print("estamos en cerezas")
+    elif (tipo == "arandanos"):
+      # Verificar si el archivo tiene un nombre y es una imagen
+      if file.filename == '':
+          return "El archivo no tiene un nombre válido."
+      if not file.content_type.startswith('image/'):
+          return "El archivo no es una imagen válida."
+
+      ruta_img = "image/"
+      fecha_actual = datetime.datetime.now().strftime("%Y%m%d")
+      numero_aleatorio = str(random.randint(1000, 9999))
+
+      nombre_archivo = "img" + numero_aleatorio + "_" + fecha_actual + ".jpg"
+
+      file.save(ruta_img + nombre_archivo)
+
+      inicializar_arandanos(ruta_img, nombre_archivo, numero_aleatorio, fecha_actual)
+      return "Se verificó el archivo y se generó un reporte con éxito!"
+    else:
+      print("el nombre no coincide ni con arandanos ni con cerezas")
       
 
     return "Hubo un problema!"
