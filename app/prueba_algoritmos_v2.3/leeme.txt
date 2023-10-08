@@ -1,0 +1,18 @@
+Estimado a considerar:
+
+-----------------------------------
+Script a ejecutar: demo_main_v2_1.py
+Este script procesa una imagen, cuya ruta se debe escribirse en el archivo: declarar_rutas.py
+Parámetros están declarados en archivo: declarar_variables.py
+
+-----------------------------------
+Script que ejecuta una carpeta con varias imágenes es: demo_main_multiimagenes_v2_1.py
+Este script procesa varias imágenes, cuya ruta se debe escribirse en el archivo: declarar_rutas_multiimagenes.py
+Parámetros están declarados en archivo demo_main_multiimagenes_v2_1.py, entre las líneas 6 y 29.
+
+-----------------------------------
+Ambos archivos: demo_main_v2_1.py y demo_main_multiimagenes.py, entregan cuatro archivos de salidas los cuales son: 
+- archivo excel, 
+- archivo json, 
+- archivo pdf y 
+- archivo jpg.

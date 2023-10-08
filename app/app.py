@@ -1,10 +1,13 @@
 from flask_cors import CORS
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy 
 from flask_marshmallow import Marshmallow
-import pymysql
-import __init__
-from . import db
+import random
+import datetime
+
+db = SQLAlchemy()
+from __init__ import get_db_connection
+from demo_main_v9_5 import proceso_analisis
 
 app = Flask(__name__)
 CORS(app)
@@ -46,13 +49,84 @@ def add_usuario():
 
   return usuario_schema.jsonify(nuevo_usuario)
 
-# consultar usuarios v:
-@app.route('/productos', methods=['GET']) 
-def get_usuario():
-  all_usuarios = Usuario.query.all()
-  result = usuario_schema.dump(all_usuarios)
+# consultar frutas v:
+@app.route('/get_type_fruit')
+def consultar_tipo_fruta():
+  print("entramos")
 
-  return jsonify(result)
+  cnx = get_db_connection()
+
+  cursor = cnx.cursor()
+
+  query = "SELECT * FROM Tipo_Fruta;"
+
+  cursor.execute(query)
+
+  rows = cursor.fetchall()
+
+  return jsonify(rows)
+@app.route('/post_type_fruit', methods=['POST'])  
+def insert_type_fruit():
+
+  cnx = get_db_connection()  
+  cursor = cnx.cursor()
+
+  tipo = request.json['tipo']
+  descripcion = request.json['descripcion']  
+
+  query = "INSERT INTO Tipo_Fruta (tipo, descripcion) VALUES (%s, %s)"
+  datos = (tipo, descripcion)
+
+  cursor.execute(query, datos)
+
+  cnx.commit()  
+
+  cursor.close()
+  cnx.close()
+
+  return "tipo de fruta insertado insertado!"
+@app.route('/analisis', methods=['POST'])
+def insert_analisis_img():
+    #tipo = request.json['selecction']
+    tipo = "arandanos"
+    print(tipo)
+    # Verificar si se recibió un archivo en la solicitud POST
+    if 'file' not in request.files:
+        return "No se ha proporcionado un archivo."
+
+    # Obtener el archivo de la solicitud POST
+    file = request.files['file']
+    if (tipo == "arandanos"):
+      # Verificar si el archivo tiene un nombre y es una imagen
+      if file.filename == '':
+          return "El archivo no tiene un nombre válido."
+      if not file.content_type.startswith('image/'):
+          return "El archivo no es una imagen válida."
+
+      ruta_img = "image/"
+      fecha_actual = datetime.datetime.now().strftime("%Y%m%d")
+      numero_aleatorio = str(random.randint(1000, 9999))
+
+      nombre_archivo = "img" + numero_aleatorio + "_" + fecha_actual + ".jpg"
+
+      file.save(ruta_img + nombre_archivo)
+
+      proceso_analisis(ruta_img, nombre_archivo, numero_aleatorio, fecha_actual)
+      return "Se verificó el archivo y se generó un reporte con éxito!"
+    if (tipo == "cerezas"):
+      print("estamos en cerezas")
+      
+
+    return "Hubo un problema!"
+
+@app.route('/descargar_pdf', methods=['GET'])
+def descargar_pdf():
+    # Supongamos que 'nombre_archivo' es el nombre del archivo PDF temporal generado previamente
+    nombre_archivo = 'nombre_del_archivo.pdf'
+    
+    # Utiliza send_file para enviar el archivo al front end
+    return send_file(nombre_archivo, as_attachment=True)
+
 
 
 if __name__ == "__main__":
