@@ -7,7 +7,7 @@ import datetime
 
 db = SQLAlchemy()
 from __init__ import get_db_connection
-from demo_main_v9_5 import proceso_analisis
+from prueba_algoritmos_v9_5.demo_main_v9_5 import proceso_analisis
 from prueba_algoritmos_v2_3.demo_main_v2_3 import inicializar_arandanos
 
 app = Flask(__name__)
@@ -88,7 +88,7 @@ def insert_type_fruit():
 @app.route('/analisis', methods=['POST'])
 def insert_analisis_img():
     #tipo = request.json['selecction']
-    tipo = "arandanos"
+    tipo = "cerezas"
     print(tipo)
     # Verificar si se recibió un archivo en la solicitud POST
     if 'file' not in request.files:
