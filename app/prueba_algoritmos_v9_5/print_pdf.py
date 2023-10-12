@@ -402,9 +402,7 @@ def documento(results, largo, h, ruta_guardar, name_file, image_file, tam_y, tam
     lista_calibre.append(round(((calibre_6 * 100) / largo),2))
     lista_pedicelo.append(round(((positivo * 100) / largo),2))
     lista_pedicelo.append(round(((negativo * 100) / largo),2))
-    
-    print(data_json)
   
-    #add_datos_cerezas(data_json, numero_aleatorio, fecha_actual, version)
+    add_datos_cerezas(data_json, numero_aleatorio, fecha_actual, version)
     export_to_pdf(data,image_file,lista_color,lista_calibre,lista_pedicelo, name_file, h, ruta_guardar, tam_y, tam_x, numero_aleatorio, fecha_actual)
     guardar_excel(data, ruta_guardar, name_file, numero_aleatorio, fecha_actual)

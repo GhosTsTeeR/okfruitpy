@@ -28,7 +28,7 @@ def add_datos_cerezas(data_json, numero_aleatorio, fecha_actual, version):
   cnx = get_db_connection()  
   cursor = cnx.cursor()
   query_uno = 'INSERT INTO Analisis_Fruta (idDocumento, descripcion, Tipo_Fruta_idTipo_Fruta, Huerto_idHuerto) VALUES (%s, %s, %s, %s)'
-  datos_uno = (nombreUnico, "no se", 1, 1)
+  datos_uno = (nombreUnico, "Descripcion relativa enviada desde la bd", 1, 1)
   cursor.execute(query_uno, datos_uno)
   cnx.commit()
   cursor.close()
@@ -42,8 +42,8 @@ def add_datos_cerezas(data_json, numero_aleatorio, fecha_actual, version):
     pedicelo = fruto['Pedicelo']
     danio = fruto['Danio']
 
-    query_dos = 'INSERT INTO Resultado_Cereza (idAnalisis_Fruta, Numero_Fruto, Color, Pedicelo, Porcentaje_Daño) VALUES (%s, %s, %s, %s, %s)'
-    datos_dos = (11, numero_fruto, color, pedicelo, danio)
+    query_dos = 'INSERT INTO Resultado_Cereza (idDocumento, Numero_Fruto, Color, Porcentaje_Daño, Pedicelo, calibre) VALUES (%s, %s, %s, %s, %s, %s)'
+    datos_dos = (nombreUnico, numero_fruto, color, danio, pedicelo, calibre)
     #posiblemente haya fallos por la falta de calibre
     cursor.execute(query_dos, datos_dos)
     cnx.commit()
@@ -55,7 +55,7 @@ def add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version):
   cnx = get_db_connection()  
   cursor = cnx.cursor()
   query_uno = 'INSERT INTO Analisis_Fruta (idDocumento, descripcion, Tipo_Fruta_idTipo_Fruta, Huerto_idHuerto) VALUES (%s, %s, %s, %s)'
-  datos_uno = (nombreUnico, "no se", 1, 1)
+  datos_uno = (nombreUnico, "Descripcion relativa enviada desde la bd", 1, 1)
   cursor.execute(query_uno, datos_uno)
   cnx.commit()
   cursor.close()
@@ -69,8 +69,8 @@ def add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version):
     manipulacion = fruto['Manipulacion']
     danio = fruto['Danio']
 
-    query_dos = 'INSERT INTO Resultado_Arandano (idAnalisis_Fruta, Numero_Fruto, Color, Porcentaje_Daño, Bloom) VALUES (%s, %s, %s, %s, %s)'
-    datos_dos = (14, numero_fruto, color, danio, manipulacion)
+    query_dos = 'INSERT INTO Resultado_Arandano (idDocumento, Numero_Fruto, Color, Porcentaje_Daño, calibre, manipulacion) VALUES (%s, %s, %s, %s, %s, %s)'
+    datos_dos = (nombreUnico, numero_fruto, color, danio, calibre, manipulacion)
     #posiblemente haya fallos por la falta de calibre
     cursor.execute(query_dos, datos_dos)
     cnx.commit()

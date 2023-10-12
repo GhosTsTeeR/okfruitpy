@@ -171,7 +171,7 @@ def documento(results, largo, image_file, ruta_guardar, name_file, h, numero_ale
     data_json['respuesta'] = 'Exito'
 
     datos['solicitudImagen_id'] = 1
-    datos['imagenProcesada'] = 'temp.jpeg'
+    datos['imagenProcesada'] = numero_aleatorio+version+fecha_actual
     
     datos_array.append(datos)
 
@@ -276,6 +276,5 @@ def documento(results, largo, image_file, ruta_guardar, name_file, h, numero_ale
     lista_calibre.append(round(((calibre_7 * 100) / largo),2))
 
     add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version)
-    print(data_json)
     export_to_pdf(data,image_file,lista_color,lista_calibre, ruta_guardar, name_file, h, numero_aleatorio, fecha_actual)
     guardar_excel(data,ruta_guardar, name_file, numero_aleatorio, fecha_actual)
