@@ -63,8 +63,25 @@ def consultar_tipo_fruta():
   cursor.execute(query)
 
   rows = cursor.fetchall()
-
   return jsonify(rows)
+
+# Consultar UsuariosRegistrados
+@app.route('/get_usuarios/<string:username>/<string:password>', methods=['GET'])
+def obtenerUsuario(username, password):
+    cnx = get_db_connection()
+    cursor = cnx.cursor()
+    query = "SELECT * FROM Usuario WHERE nombres = %s AND password = %s;"
+    cursor.execute(query, (username, password))
+
+    row = cursor.fetchone()  # Obtener la primera fila que cumple con los criterios de consulta
+    print(row)
+
+    if row is not None:
+        return jsonify(row)
+    else:
+        return jsonify({"mensaje": "Usuario no encontrado"})
+
+
 @app.route('/post_type_fruit', methods=['POST'])  
 def insert_type_fruit():
 
@@ -147,4 +164,4 @@ def descargar_pdf():
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(host='192.168.94.98',port=5000)
