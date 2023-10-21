@@ -6,9 +6,10 @@ import random
 import datetime
 
 db = SQLAlchemy()
-from __init__ import get_db_connection
+from __init__ import get_db_connection, export_pdf
 from prueba_algoritmos_v9_5.demo_main_v9_5 import proceso_analisis
 from prueba_algoritmos_v2_3.demo_main_v2_3 import inicializar_arandanos
+
 
 app = Flask(__name__)
 CORS(app)
@@ -88,7 +89,7 @@ def insert_type_fruit():
 @app.route('/analisis', methods=['POST'])
 def insert_analisis_img():
     #tipo = request.json['selecction']
-    tipo = "cerezas"
+    tipo = "arandanos"
     print(tipo)
     # Verificar si se recibió un archivo en la solicitud POST
     if 'file' not in request.files:
@@ -138,11 +139,15 @@ def insert_analisis_img():
 
 @app.route('/descargar_pdf', methods=['GET'])
 def descargar_pdf():
-    # Supongamos que 'nombre_archivo' es el nombre del archivo PDF temporal generado previamente
-    nombre_archivo = 'nombre_del_archivo.pdf'
-    
-    # Utiliza send_file para enviar el archivo al front end
-    return send_file(nombre_archivo, as_attachment=True)
+  
+  pdf= export_pdf()
+  response = send_file(
+        pdf,
+        as_attachment=True,  # Esto hará que el navegador ofrezca descargar el archivo
+        download_name='hola.pdf'
+    )
+
+  return response;
 
 
 

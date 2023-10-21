@@ -275,6 +275,7 @@ def documento(results, largo, image_file, ruta_guardar, name_file, h, numero_ale
     lista_calibre.append(round(((calibre_6 * 100) / largo),2))
     lista_calibre.append(round(((calibre_7 * 100) / largo),2))
 
-    add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version)
+    
     export_to_pdf(data,image_file,lista_color,lista_calibre, ruta_guardar, name_file, h, numero_aleatorio, fecha_actual)
     guardar_excel(data,ruta_guardar, name_file, numero_aleatorio, fecha_actual)
+    add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version)
