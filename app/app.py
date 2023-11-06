@@ -6,7 +6,11 @@ import random
 import datetime
 
 db = SQLAlchemy()
+<<<<<<< HEAD
+from __init__ import get_db_connection, add_user, login_user
+=======
 from __init__ import get_db_connection, export_pdf
+>>>>>>> bfedd572716e30fff41b7765c46363c4f00f1300
 from prueba_algoritmos_v9_5.demo_main_v9_5 import proceso_analisis
 from prueba_algoritmos_v2_3.demo_main_v2_3 import inicializar_arandanos
 
@@ -17,40 +21,6 @@ CORS(app)
 # HTPP
 # inicializar sqlalchemy y marshmallow
 ma = Marshmallow(app)
-
-# modelo de tabla 
-class Usuario(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  nombre = db.Column(db.String(100), unique=True)
-  correo = db.Column(db.String(200))
-  pssw = db.Column(db.String(200))
-
-  def __init__(self, nombre, correo, pssw):
-    self.nombre = nombre
-    self.correo = correo 
-    self.pssw = pssw
-
-# schema del usuario
-class UsuarioSchema(ma.Schema):
-  class Meta:
-    fields = ('id', 'nombre', 'correo', 'pssw')
-
-usuario_schema = UsuarioSchema()
-pusuarios_schema = UsuarioSchema(many=True)
-
-# crear un nuevo usuario
-@app.route('/usuario', methods=['POST'])
-def add_usuario():
-  nombre = request.json['nombre']
-  correo = request.json['correo']
-  pssw = request.json['pssw']
-
-  nuevo_usuario = Usuario(nombre, correo, pssw)
-
-  db.session.add(nuevo_usuario)
-  db.session.commit()
-
-  return usuario_schema.jsonify(nuevo_usuario)
 
 # consultar frutas v:
 @app.route('/get_type_fruit')
@@ -66,7 +36,7 @@ def consultar_tipo_fruta():
   rows = cursor.fetchall()
   return jsonify(rows)
 
-# Consultar UsuariosRegistrados
+# Consultar UsuariosRegistrados Esta ruta para validar Login BASICA****
 @app.route('/get_usuarios/<string:username>/<string:password>', methods=['GET'])
 def obtenerUsuario(username, password):
     cnx = get_db_connection()
@@ -75,7 +45,7 @@ def obtenerUsuario(username, password):
     cursor.execute(query, (username, password))
 
     row = cursor.fetchone()  # Obtener la primera fila que cumple con los criterios de consulta
-    print(row)
+    print("----------------------------------------------------")
 
     if row is not None:
         return jsonify(row)
@@ -105,8 +75,13 @@ def insert_type_fruit():
   return "tipo de fruta insertado insertado!"
 @app.route('/analisis', methods=['POST'])
 def insert_analisis_img():
+<<<<<<< HEAD
+    print(request)
+    tipo = request.json['selecction']
+=======
     #tipo = request.json['selecction']
     tipo = "arandanos"
+>>>>>>> bfedd572716e30fff41b7765c46363c4f00f1300
     print(tipo)
     # Verificar si se recibió un archivo en la solicitud POST
     if 'file' not in request.files:
@@ -154,6 +129,36 @@ def insert_analisis_img():
 
     return "Hubo un problema!"
 
+<<<<<<< HEAD
+@app.route('/add-usuario', methods=['POST'])
+def add_usuario():
+  correo = request.json['email']
+  password = request.json['password']
+  proceso=add_user(correo, password)
+  return jsonify({
+  "code": 200, 
+  "message": "Exito" 
+})
+
+#logueo Usuario
+#logueo Usuario
+@app.route('/logeo_user', methods=['POST'])
+def logeo_user():
+  correo = request.json.get('nombre')
+  password = request.json.get('contrasena')
+
+  if correo is None or password is None:
+      return jsonify({"error": "Correo y contraseña son requeridos"}), 400
+
+  status, user_email = login_user(correo, password)
+
+  if status == 200:
+      return jsonify({"message": "Inicio de sesión exitoso", "nombre": user_email})
+  elif status == 401:
+      return jsonify({"error": "Credenciales inválidas"}), 401
+  else:
+      return jsonify({"error": "Error en el servidor"}), 500
+=======
 @app.route('/descargar_pdf', methods=['GET'])
 def descargar_pdf():
   
@@ -165,8 +170,20 @@ def descargar_pdf():
     )
 
   return response;
+>>>>>>> bfedd572716e30fff41b7765c46363c4f00f1300
 
 
+#************** Se define el HOST para poder acceder a la API
+# en la red local de nuestro hogar
 
+# host = **IP de nuestro dispositivo a nivel WIFI **
+# Se ingresa a CMD, se ejecuta el comando -ipconfig /all-
+# Se saca la IP que aparece en Dirección IPv4
+
+# port = ** El puerto se puede dejar asi.
+
+
+# Al ejecutar la API en CMD toca dar permisos de Administrador
+# Ejecutar CMD como administrador.
 if __name__ == "__main__":
-    app.run(host='192.168.94.98',port=5000)
+    app.run(host='192.168.1.7',port=5000)
