@@ -6,9 +6,14 @@ import random
 import datetime
 
 db = SQLAlchemy()
+<<<<<<< HEAD
 from __init__ import get_db_connection, add_user, login_user
+=======
+from __init__ import get_db_connection, export_pdf
+>>>>>>> bfedd572716e30fff41b7765c46363c4f00f1300
 from prueba_algoritmos_v9_5.demo_main_v9_5 import proceso_analisis
 from prueba_algoritmos_v2_3.demo_main_v2_3 import inicializar_arandanos
+
 
 app = Flask(__name__)
 CORS(app)
@@ -70,8 +75,13 @@ def insert_type_fruit():
   return "tipo de fruta insertado insertado!"
 @app.route('/analisis', methods=['POST'])
 def insert_analisis_img():
+<<<<<<< HEAD
     print(request)
     tipo = request.json['selecction']
+=======
+    #tipo = request.json['selecction']
+    tipo = "arandanos"
+>>>>>>> bfedd572716e30fff41b7765c46363c4f00f1300
     print(tipo)
     # Verificar si se recibió un archivo en la solicitud POST
     if 'file' not in request.files:
@@ -119,6 +129,7 @@ def insert_analisis_img():
 
     return "Hubo un problema!"
 
+<<<<<<< HEAD
 @app.route('/add-usuario', methods=['POST'])
 def add_usuario():
   correo = request.json['email']
@@ -147,6 +158,19 @@ def logeo_user():
       return jsonify({"error": "Credenciales inválidas"}), 401
   else:
       return jsonify({"error": "Error en el servidor"}), 500
+=======
+@app.route('/descargar_pdf', methods=['GET'])
+def descargar_pdf():
+  
+  pdf= export_pdf()
+  response = send_file(
+        pdf,
+        as_attachment=True,  # Esto hará que el navegador ofrezca descargar el archivo
+        download_name='hola.pdf'
+    )
+
+  return response;
+>>>>>>> bfedd572716e30fff41b7765c46363c4f00f1300
 
 
 #************** Se define el HOST para poder acceder a la API
