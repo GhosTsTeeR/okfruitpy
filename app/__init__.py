@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import bcrypt
 from flask import Flask 
-=======
-from flask import Flask, jsonify
->>>>>>> bfedd572716e30fff41b7765c46363c4f00f1300
 from flask_sqlalchemy import SQLAlchemy
 import mysql.connector
 import binascii
