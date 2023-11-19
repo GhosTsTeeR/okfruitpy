@@ -65,7 +65,7 @@ scikit-learn==1.0.1
 scipy==1.6.1
 simplejson==3.19.2
 six==1.16.0
-SQLAlchemy==2.0.21
+sqlalchemy
 threadpoolctl
 tifffile
 traits==6.3.2
