@@ -171,8 +171,6 @@ def add_user(correo, password):
     except mysql.connector.Error as err:
         print(f"Error al insertar en MySQL: {err}")
 
-<<<<<<< HEAD
-=======
 def add_user(correo, password):
     print(correo, password)
     try:
@@ -189,14 +187,10 @@ def add_user(correo, password):
 
     except mysql.connector.Error as err:
         print(f"Error al insertar en MySQL: {err}")
-
->>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
     finally:
         print("finalizó correctamente")
         cursor.close()
         cnx.close()
-<<<<<<< HEAD
-=======
 
 def login_user(correo, password):
     try:
@@ -220,8 +214,6 @@ def login_user(correo, password):
         cursor.close()
         cnx.close()
 
-
->>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
 
 def login_user(correo, password):
     try:
