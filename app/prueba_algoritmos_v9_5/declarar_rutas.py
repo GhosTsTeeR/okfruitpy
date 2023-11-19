@@ -89,6 +89,6 @@ name_folder = image_file.split("/")[-2]
 # decodeit.close()
 
 ## Ruta para guardar resultados
-ruta_guardar = os.path.join(r'/Users/sergiobaltierra/OneDrive - Universidad Autónoma de Chile/Proyectos/FIC/resultados/' + name_file + version + '/')
+ruta_guardar="guardar_analisis/"
 if not os.path.exists(ruta_guardar):
     os.makedirs(ruta_guardar)

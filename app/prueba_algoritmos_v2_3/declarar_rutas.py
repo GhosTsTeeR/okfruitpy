@@ -46,7 +46,7 @@ name_folder = image_file.split("/")[-2]
 
 ## Ruta para guardar resultados
 name_file = name_file.replace(" ","_")
-ruta_guardar = os.path.join(r'/Users/sergiobaltierra/OneDrive - Universidad Autónoma de Chile/Proyectos/FIC - OKFruitApp/resultados/' + name_file + version +'/')
+ruta_guardar ="guardar_analisis/" 
 
 if not os.path.exists(ruta_guardar):
     os.makedirs(ruta_guardar)

@@ -2,6 +2,7 @@ from prueba_algoritmos_v9_5.declarar_librerias import *
 from prueba_algoritmos_v9_5.declarar_variables import *
 from prueba_algoritmos_v9_5.declarar_rutas import *
 
+
 def proceso_analisis(ruta_img, image_file, numero_aleatorio, fecha_actual):  
   t_0 = time.process_time_ns()
   ruta_guardar= 'guardar_analisis/'
@@ -9,7 +10,7 @@ def proceso_analisis(ruta_img, image_file, numero_aleatorio, fecha_actual):
   ## 
 
   img = cv2.imread(ruta_img+image_file)
-
+  # Verifica si la imagen está pixelada
   cv2.imwrite(ruta_guardar+"img"+numero_aleatorio + version + "_" + fecha_actual+".jpg", img)
 
 
@@ -187,13 +188,18 @@ def proceso_analisis(ruta_img, image_file, numero_aleatorio, fecha_actual):
 
   #Verificación para eliminar ruido de la imagen (Contornos pequeños)
   for index, cnt in enumerate(contours):
-    x,y,w,h = cv2.boundingRect(cnt)
-    if (w > tamanio_w and h > tamanio_h):
-        cantidad = cantidad + 1
-        area = cv2.contourArea(cnt)
-        area_prom = area_prom + area
+      x, y, w, h = cv2.boundingRect(cnt)
+      if (w > tamanio_w and h > tamanio_h):
+          cantidad = cantidad + 1
+          area = cv2.contourArea(cnt)
+          area_prom = area_prom + area
 
-  area_prom = area_prom / cantidad
+  # Asegúrate de que cantidad no sea cero antes de la división
+  if cantidad > 0:
+      area_prom = area_prom / cantidad
+  else:
+      area_prom = 0
+
   cantidad = 0
   area_prom = 0
   prom_w = 0
