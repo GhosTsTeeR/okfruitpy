@@ -285,15 +285,6 @@ def descargar_pdf():
         as_attachment=True,  # Esto hará que el navegador ofrezca descargar el archivo
         download_name='hola.pdf'
     )
-@app.route('/add-usuario', methods=['POST'])
-def add_usuario():
-  correo = request.json['email']
-  password = request.json['password']
-  proceso=add_user(correo, password)
-  return jsonify({
-  "code": 200, 
-  "message": "Exito" 
-
 
 
 #************** Se define el HOST para poder acceder a la API
