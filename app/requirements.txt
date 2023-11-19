@@ -69,7 +69,7 @@ SQLAlchemy==2.0.21
 threadpoolctl
 tifffile
 traits==6.3.2
-typing-extensions==4.5.2
+typing-extensions
 urllib3==2.1.0
 waitress==2.1.2
 werkzeug==3.0.0
