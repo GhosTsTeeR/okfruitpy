@@ -25,6 +25,24 @@ CORS(app)
 # HTPP
 # inicializar sqlalchemy y marshmallow
 ma = Marshmallow(app)
+"""#logueo Usuario
+@app.route('/logeo_user', methods=['POST'])
+def logeo_user():
+  correo = request.json.get('nombre')
+  password = request.json.get('contrasena')
+
+  if correo is None or password is None:
+      return jsonify({"error": "Correo y contraseña son requeridos"}), 400
+
+  status, user_email = login_user(correo, password)
+
+  if status == 200:
+      return jsonify({"message": "Inicio de sesión exitoso", "nombre": user_email})
+  elif status == 401:
+      return jsonify({"error": "Credenciales inválidas"}), 401
+  else:
+      return jsonify({"error": "Error en el servidor"}), 500
+"""
 
 #logueo Usuario
 @app.route('/logeo_user', methods=['POST'])
@@ -255,8 +273,6 @@ def insert_analisis_img():
       
 
     return "Hubo un problema!"
-
-<<<<<<< HEAD
 """
 
 
@@ -278,25 +294,6 @@ def add_usuario():
   "code": 200, 
   "message": "Exito" 
 
-
-#logueo Usuario
-#logueo Usuario
-@app.route('/logeo_user', methods=['POST'])
-def logeo_user():
-  correo = request.json.get('nombre')
-  password = request.json.get('contrasena')
-
-  if correo is None or password is None:
-      return jsonify({"error": "Correo y contraseña son requeridos"}), 400
-
-  status, user_email = login_user(correo, password)
-
-  if status == 200:
-      return jsonify({"message": "Inicio de sesión exitoso", "nombre": user_email})
-  elif status == 401:
-      return jsonify({"error": "Credenciales inválidas"}), 401
-  else:
-      return jsonify({"error": "Error en el servidor"}), 500
 
 
 #************** Se define el HOST para poder acceder a la API
