@@ -67,7 +67,7 @@ simplejson==3.19.2
 six==1.16.0
 SQLAlchemy==2.0.21
 threadpoolctl
-tifffile==2023.9.26
+tifffile
 traits==6.3.2
 typing-extensions==4.8.0
 urllib3==2.1.0
