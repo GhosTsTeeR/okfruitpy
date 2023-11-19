@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+import bcrypt
+from flask import Flask 
 from flask_sqlalchemy import SQLAlchemy
 import mysql.connector
 import binascii
@@ -170,10 +171,57 @@ def add_user(correo, password):
     except mysql.connector.Error as err:
         print(f"Error al insertar en MySQL: {err}")
 
+<<<<<<< HEAD
+=======
+def add_user(correo, password):
+    print(correo, password)
+    try:
+        cnx = get_db_connection()
+        cursor = cnx.cursor()
+        # Generar un hash de la contraseña
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        query = "INSERT INTO Usuario (correo, Tipo_Documento_idTipo_Documento, Rol_idRol, password ) VALUES (%s, %s, %s, %s)"
+        datos = (correo, 1, 1, hashed_password.decode('utf-8'))
+
+        with cnx.cursor() as cursor:
+            cursor.execute(query, datos)
+            cnx.commit()
+
+    except mysql.connector.Error as err:
+        print(f"Error al insertar en MySQL: {err}")
+
+>>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
     finally:
         print("finalizó correctamente")
         cursor.close()
         cnx.close()
+<<<<<<< HEAD
+=======
+
+def login_user(correo, password):
+    try:
+        cnx = get_db_connection()
+        cursor = cnx.cursor()
+        query = "SELECT correo, password FROM Usuario WHERE correo = %s"
+        cursor.execute(query, (correo,))
+        row = cursor.fetchone()
+
+        if row:
+            stored_password = row[1].encode('utf-8')
+            if bcrypt.checkpw(password.encode('utf-8'), stored_password):
+                return 200, row[0] 
+        return 401, ""
+
+    except mysql.connector.Error as err:
+        print(f"Error al verificar en MySQL: {err}")
+        return 500, None
+
+    finally:
+        cursor.close()
+        cnx.close()
+
+
+>>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
 
 def login_user(correo, password):
     try:

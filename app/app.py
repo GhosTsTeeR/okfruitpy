@@ -13,7 +13,11 @@ import random
 
 
 db = SQLAlchemy()
+<<<<<<< HEAD
 from __init__ import get_db_connection, export_pdf, add_user, login_user
+=======
+from __init__ import get_db_connection, add_user, login_user
+>>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
 from prueba_algoritmos_v9_5.demo_main_v9_5 import proceso_analisis
 from prueba_algoritmos_v2_3.demo_main_v2_3 import inicializar_arandanos
 
@@ -25,6 +29,7 @@ CORS(app)
 # inicializar sqlalchemy y marshmallow
 ma = Marshmallow(app)
 
+<<<<<<< HEAD
 #logueo Usuario
 @app.route('/logeo_user', methods=['POST'])
 def logeo_user():
@@ -53,6 +58,8 @@ def add_usuario():
   "code": 200, 
   "message": "Exito" 
 })
+=======
+>>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
 # consultar frutas v:
 @app.route('/get_type_fruit')
 def consultar_tipo_fruta():
@@ -67,7 +74,7 @@ def consultar_tipo_fruta():
   rows = cursor.fetchall()
   return jsonify(rows)
 
-# Consultar UsuariosRegistrados
+# Consultar UsuariosRegistrados Esta ruta para validar Login BASICA****
 @app.route('/get_usuarios/<string:username>/<string:password>', methods=['GET'])
 def obtenerUsuario(username, password):
     cnx = get_db_connection()
@@ -76,7 +83,7 @@ def obtenerUsuario(username, password):
     cursor.execute(query, (username, password))
 
     row = cursor.fetchone()  # Obtener la primera fila que cumple con los criterios de consulta
-    print(row)
+    print("----------------------------------------------------")
 
     if row is not None:
         return jsonify(row)
@@ -110,6 +117,7 @@ def insert_type_fruit():
 #CODIGO PARA PROCESAR LA IMAGEN ENVIADA DESDE LA APLICACION 
 @app.route('/analisis', methods=['POST'])
 def insert_analisis_img():
+<<<<<<< HEAD
     #print(request.headers)
     #print(request.content_type)
     #tipo="cerezas"
@@ -197,6 +205,10 @@ def insert_analisis_img():
     #tipo = request.form.get('selection','')
     tipo = "arandanos"
     print(request.form)  # Agrega este registro para imprimir el contenido de la solicitud
+=======
+    print(request)
+    tipo = request.json['selecction']
+>>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
     print(tipo)
     # Verificar si se recibió un archivo en la solicitud POST
     if 'file' not in request.files:
@@ -251,6 +263,7 @@ def insert_analisis_img():
 
     return "Hubo un problema!"
 
+<<<<<<< HEAD
 """
 
 
@@ -263,10 +276,53 @@ def descargar_pdf():
         as_attachment=True,  # Esto hará que el navegador ofrezca descargar el archivo
         download_name='hola.pdf'
     )
+=======
+@app.route('/add-usuario', methods=['POST'])
+def add_usuario():
+  correo = request.json['email']
+  password = request.json['password']
+  proceso=add_user(correo, password)
+  return jsonify({
+  "code": 200, 
+  "message": "Exito" 
+})
+>>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
 
-  return response;
+#logueo Usuario
+#logueo Usuario
+@app.route('/logeo_user', methods=['POST'])
+def logeo_user():
+  correo = request.json.get('nombre')
+  password = request.json.get('contrasena')
+
+  if correo is None or password is None:
+      return jsonify({"error": "Correo y contraseña son requeridos"}), 400
+
+  status, user_email = login_user(correo, password)
+
+  if status == 200:
+      return jsonify({"message": "Inicio de sesión exitoso", "nombre": user_email})
+  elif status == 401:
+      return jsonify({"error": "Credenciales inválidas"}), 401
+  else:
+      return jsonify({"error": "Error en el servidor"}), 500
 
 
+#************** Se define el HOST para poder acceder a la API
+# en la red local de nuestro hogar
 
+# host = **IP de nuestro dispositivo a nivel WIFI **
+# Se ingresa a CMD, se ejecuta el comando -ipconfig /all-
+# Se saca la IP que aparece en Dirección IPv4
+
+# port = ** El puerto se puede dejar asi.
+
+
+# Al ejecutar la API en CMD toca dar permisos de Administrador
+# Ejecutar CMD como administrador.
 if __name__ == "__main__":
+<<<<<<< HEAD
     app.run(port=5000, debug = True)
+=======
+    app.run(host='192.168.1.7',port=5000)
+>>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
