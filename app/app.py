@@ -13,11 +13,8 @@ import random
 
 
 db = SQLAlchemy()
-<<<<<<< HEAD
 from __init__ import get_db_connection, export_pdf, add_user, login_user
-=======
 from __init__ import get_db_connection, add_user, login_user
->>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
 from prueba_algoritmos_v9_5.demo_main_v9_5 import proceso_analisis
 from prueba_algoritmos_v2_3.demo_main_v2_3 import inicializar_arandanos
 
@@ -29,7 +26,6 @@ CORS(app)
 # inicializar sqlalchemy y marshmallow
 ma = Marshmallow(app)
 
-<<<<<<< HEAD
 #logueo Usuario
 @app.route('/logeo_user', methods=['POST'])
 def logeo_user():
@@ -58,8 +54,6 @@ def add_usuario():
   "code": 200, 
   "message": "Exito" 
 })
-=======
->>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
 # consultar frutas v:
 @app.route('/get_type_fruit')
 def consultar_tipo_fruta():
@@ -117,7 +111,6 @@ def insert_type_fruit():
 #CODIGO PARA PROCESAR LA IMAGEN ENVIADA DESDE LA APLICACION 
 @app.route('/analisis', methods=['POST'])
 def insert_analisis_img():
-<<<<<<< HEAD
     #print(request.headers)
     #print(request.content_type)
     #tipo="cerezas"
@@ -276,7 +269,6 @@ def descargar_pdf():
         as_attachment=True,  # Esto hará que el navegador ofrezca descargar el archivo
         download_name='hola.pdf'
     )
-=======
 @app.route('/add-usuario', methods=['POST'])
 def add_usuario():
   correo = request.json['email']
@@ -285,8 +277,7 @@ def add_usuario():
   return jsonify({
   "code": 200, 
   "message": "Exito" 
-})
->>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
+
 
 #logueo Usuario
 #logueo Usuario
@@ -321,8 +312,4 @@ def logeo_user():
 # Al ejecutar la API en CMD toca dar permisos de Administrador
 # Ejecutar CMD como administrador.
 if __name__ == "__main__":
-<<<<<<< HEAD
     app.run(port=5000, debug = True)
-=======
-    app.run(host='192.168.1.7',port=5000)
->>>>>>> 67d43276760893c31315e65ed5471222dd5fee34
