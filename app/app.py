@@ -28,8 +28,8 @@ ma = Marshmallow(app)
 #logueo Usuario
 @app.route('/logeo_user', methods=['POST'])
 def logeo_user():
-  correo = request.json.get('nombre')
-  password = request.json.get('contrasena')
+  correo = request.json.get('name')
+  password = request.json.get('password')
 
   if correo is None or password is None:
       return jsonify({"error": "Correo y contraseña son requeridos"}), 400
