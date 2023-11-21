@@ -25,7 +25,7 @@ CORS(app)
 # HTPP
 # inicializar sqlalchemy y marshmallow
 ma = Marshmallow(app)
-"""#logueo Usuario
+#logueo Usuario
 @app.route('/logeo_user', methods=['POST'])
 def logeo_user():
   correo = request.json.get('nombre')
@@ -61,7 +61,7 @@ def logeo_user():
       return jsonify({"error": "Credenciales inválidas"}), 401
   else:
       return jsonify({"error": "Error en el servidor"}), 500
-
+"""
 # crear un nuevo usuario
 @app.route('/add-usuario', methods=['POST'])
 def add_usuario():
