@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 import mysql.connector
 import binascii
 from io import BytesIO
-import fitz  
-import bcrypt
+import fitz
+import datetime
 
 db = SQLAlchemy()
 
@@ -80,7 +80,7 @@ def add_datos_cerezas(data_json, numero_aleatorio, fecha_actual, version):
     cnx.commit()
     cursor.close()
     cnx.close()
-def add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version):
+def add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version, username):
   obtener_pdf = 'guardar_analisis/pdf{}{}{}.pdf'.format(numero_aleatorio, version, fecha_actual)
   with open(obtener_pdf, 'rb') as pdf_file:
     pdf_binary = pdf_file.read()
@@ -108,11 +108,14 @@ def add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version):
     cursor.close()
     cnx.close()
   
-  
+  fecha_creacion_now = datetime.datetime.now()
+
+  fecha_creacion_str = fecha_creacion_now.strftime("%Y-%m-%d %H:%M:%S")
+
   cnx = get_db_connection()  
   cursor = cnx.cursor()
-  query_uno = 'INSERT INTO Analisis_Fruta (idDocumento, descripcion, Tipo_Fruta_idTipo_Fruta, Huerto_idHuerto) VALUES (%s, %s, %s, %s)'
-  datos_uno = (nombre_unico, "Descripcion relativa enviada desde la bd", 1, 1)
+  query_uno = 'INSERT INTO Analisis_Fruta (idDocumento, descripcion, Tipo_Fruta_idTipo_Fruta, Huerto_idHuerto, idUsuario, fechaCreacion) VALUES (%s, %s, %s, %s, %s, %s)'
+  datos_uno = (nombre_unico, "Descripcion relativa enviada desde la bd", 1, 1, username, fecha_creacion_str)
   cursor.execute(query_uno, datos_uno)
   cnx.commit()
   cursor.close()
@@ -135,26 +138,26 @@ def add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version):
     cnx.close()
     
     
-def export_pdf():
-  cnx = get_db_connection()
+def export_pdf(id):
+    cnx = get_db_connection()
 
-  cursor = cnx.cursor()
+    cursor = cnx.cursor()
 
-  query = "SELECT datos FROM Reporte WHERE nombreArchivo='1253_v9_5_20231020'"
+    query = "SELECT datos FROM Reporte WHERE nombreArchivo=%s"
+    datos = (id,)
+    cursor.execute(query, datos)
 
-  cursor.execute(query)
+    rows = cursor.fetchall()
 
-  rows = cursor.fetchall()
+    if rows:
+        binary_data = binascii.a2b_base64(rows[0][0])
+        pdf_stream = BytesIO(binary_data)
+        pdf_document = fitz.open(stream=pdf_stream, filetype="pdf")
+        num_pages = pdf_document.page_count
 
-  if rows is not None:
-    binary_data = binascii.a2b_base64(rows[0][0])
-    pdf_stream = BytesIO(binary_data)
-    pdf_document = fitz.open(stream=pdf_stream, filetype="pdf")
-    num_pages = pdf_document.page_count
-
-    return pdf_stream
-  else:
-    return jsonify({"error": "No se encontraron datos en la base de datos"})
+        return pdf_stream
+    else:
+        return None
 
 def add_user(correo, password):
     print(correo, password)
