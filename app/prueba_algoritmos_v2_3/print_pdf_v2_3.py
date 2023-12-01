@@ -141,7 +141,7 @@ def guardar_excel(data,ruta_guardar, name_file, numero_aleatorio, fecha_actual):
     eliminar_imagenes_en_ruta(ruta_directorio_2)
 
 
-def documento(results, largo, image_file, ruta_guardar, name_file, h, numero_aleatorio, fecha_actual):
+def documento(results, largo, image_file, ruta_guardar, name_file, h, numero_aleatorio, fecha_actual, username):
     data = [("Arándano","Color","Calibre (mm)","Daño (%)","Manipulación (%)")]
 
     lista_color = []
@@ -278,4 +278,4 @@ def documento(results, largo, image_file, ruta_guardar, name_file, h, numero_ale
     
     export_to_pdf(data,image_file,lista_color,lista_calibre, ruta_guardar, name_file, h, numero_aleatorio, fecha_actual)
     guardar_excel(data,ruta_guardar, name_file, numero_aleatorio, fecha_actual)
-    add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version)
+    add_datos_arandanos(data_json, numero_aleatorio, fecha_actual, version, username)
