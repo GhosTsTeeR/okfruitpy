@@ -2,14 +2,13 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy 
 from flask_marshmallow import Marshmallow
-
 import logging
 from flask import Flask, request, jsonify, send_file, abort
 
-#mejora imagen
 
 import datetime
 import random
+import mysql.connector
 
 
 db = SQLAlchemy()
@@ -25,11 +24,15 @@ CORS(app)
 # HTPP
 # inicializar sqlalchemy y marshmallow
 ma = Marshmallow(app)
+
+
 #logueo Usuario
 @app.route('/logeo_user', methods=['POST'])
 def logeo_user():
   correo = request.json.get('nombre')
   password = request.json.get('contrasena')
+
+  print(correo,password)
 
   if correo is None or password is None:
       return jsonify({"error": "Correo y contraseña son requeridos"}), 400
@@ -42,17 +45,21 @@ def logeo_user():
       return jsonify({"error": "Credenciales inválidas"}), 401
   else:
       return jsonify({"error": "Error en el servidor"}), 500
+  
 
 # crear un nuevo usuario
 @app.route('/add-usuario', methods=['POST'])
 def add_usuario():
-  correo = request.json['email']
+  email = request.json['email']
   password = request.json['password']
-  proceso=add_user(correo, password)
+
+  #print(email,password)
+  proceso=add_user(email, password)
   return jsonify({
   "code": 200, 
   "message": "Exito" 
 })
+
 # consultar frutas v:
 @app.route('/get_type_fruit')
 def consultar_tipo_fruta():
@@ -121,7 +128,10 @@ def insert_analisis_img():
     logger.debug("Tipo de contenido: %s", request.content_type)
 
     tipo = request.form.get('tipo') 
+    username = request.form.get('username')  # Agrega esta línea para obtener el nombre de usuario
     logger.debug("Tipo de fruta: %s", tipo)
+    logger.debug("Nombre de usuario: %s", username)  # Agrega esta línea para imprimir o registrar el nombre de usuario
+
 
     if tipo is None or len(tipo) == 0:
         logger.error("Error: tipo viene vacío o no se proporcionó")
@@ -169,9 +179,9 @@ def insert_analisis_img():
     
     if tipo == "arandanos":
         
-        inicializar_arandanos(ruta_img, nombre_archivo, numero_aleatorio, fecha_actual)
+        inicializar_arandanos(ruta_img, nombre_archivo, numero_aleatorio, fecha_actual, username)
         print("Proceso de análisis de arándanos completado.")
-        return "Se verificó el archivo y se generó un reporte con éxito para arándanos!"
+        return jsonify({"message": "Se verificó el archivo y se generó un reporte con éxito para arándanos!", "Info": numero_aleatorio})
 
     
         """elif tipo == "cerezas":
@@ -257,15 +267,86 @@ def insert_analisis_img():
 """
 
 
-@app.route('/descargar_pdf', methods=['GET'])
-def descargar_pdf():
-  
-  pdf= export_pdf()
-  response = send_file(
-        pdf,
-        as_attachment=True,  # Esto hará que el navegador ofrezca descargar el archivo
-        download_name='hola.pdf'
-    )
+@app.route('/descargar_pdf/<id>', methods=['GET'])
+def descargar_pdf(id):
+    pdf = export_pdf(id)
+
+    if pdf:
+        return send_file(
+            pdf,
+            as_attachment=True,
+            download_name=f"{id}.pdf"
+        )
+    else:
+        return jsonify({"error": "No se encontraron datos en la base de datos para el ID proporcionado"}), 404
+
+
+def get_db_analisis(username):
+    try:
+        cnx = get_db_connection()
+        cursor = cnx.cursor()
+
+        print(f"Username recibido: {username}")
+
+        # Utiliza directamente el nombre de usuario para obtener los análisis asociados
+        query = "SELECT idDocumento, Tipo_Fruta_idTipo_Fruta, fechaCreacion FROM Analisis_Fruta WHERE idUsuario = (SELECT correo FROM Usuario WHERE correo = %s)"
+        cursor.execute(query, (username,))
+        rows = cursor.fetchall()
+
+        if rows:
+            print(f"Datos de análisis encontrados: {rows}")
+            result = (200, rows)
+        else:
+            print("No se encontraron datos de análisis.")
+            result = (401, None)
+
+        return result
+
+    except mysql.connector.Error as err:
+        print(f"Error al verificar en MySQL: {err}")
+        return (500, None)
+
+    finally:
+        if 'cursor' in locals() and cursor is not None:
+            cursor.close()
+        if 'cnx' in locals() and cnx is not None:
+            cnx.close()
+
+
+
+
+
+@app.route('/get-data-analisis/<uid>', methods=["GET"])
+def get_data_Analisis(uid):
+    logging.basicConfig(level=logging.DEBUG)
+    logger = logging.getLogger(uid)
+
+    logger.debug(f"Identificador o rut: {uid}")
+
+    if uid is None:
+        logger.error("Uid es un dato requerido")
+        return jsonify({"error": "Uid es un dato requerido"}), 400
+
+    status, data = get_db_analisis(uid)
+
+    if status == 200:
+        logger.info("Información encontrada con éxito!")
+        # Asegúrate de devolver los datos como un objeto JSON
+        print({"message": "Información encontrada con éxito!", "data": data})
+        return jsonify({"message": "Información encontrada con éxito!", "data": data})
+    elif status == 401:
+        logger.error("Credenciales inválidas")
+        return jsonify({"error": "Credenciales inválidas"}), 401
+    else:
+        logger.error("Error en el servidor")
+        return jsonify({"error": "Error en el servidor"}), 500
+
+
+
+
+
+
+
 
 
 #************** Se define el HOST para poder acceder a la API
