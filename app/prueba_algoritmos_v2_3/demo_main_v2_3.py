@@ -2,7 +2,7 @@ from prueba_algoritmos_v2_3.declarar_librerias import *
 from prueba_algoritmos_v2_3.declarar_variables import *
 from prueba_algoritmos_v2_3.declarar_rutas import *
 
-def inicializar_arandanos(ruta_img, nombre_archivo, numero_aleatorio, fecha_actual):
+def inicializar_arandanos(ruta_img, nombre_archivo, numero_aleatorio, fecha_actual, username):
     ruta_guardar= 'guardar_analisis/'
     img = cv2.imread(ruta_img+nombre_archivo)
     tam_y, tam_x, _ = img.shape
@@ -181,4 +181,4 @@ def inicializar_arandanos(ruta_img, nombre_archivo, numero_aleatorio, fecha_actu
 
     # largo = len(frame_cereza2)
     largo = len(results)
-    documento(results, largo, image_file, ruta_guardar, name_file, h, numero_aleatorio, fecha_actual, )
+    documento(results, largo, image_file, ruta_guardar, name_file, h, numero_aleatorio, fecha_actual, username)
